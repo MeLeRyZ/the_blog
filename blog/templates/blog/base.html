@@ -1,37 +1,24 @@
-{% load staticfiles %}
-    <html>
-        <head>
-            <title>Django blog</title>
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-            <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-            <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-        </head>
-
-        <body>
-          <div class="page-header">
-            <div class="registration">
-              <a href="{% url 'registration_register' %}">+</a>
-            </div>
-            {% if user.is_authenticated %}
-              <div class="button">
-                <a href="{% url 'post_new' %}">+</a>
-              </div>
-              <a href="{% url 'post_draft_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
-              <p class="top-menu">Hello {{ user.username }}<small>(<a href="{% url 'auth_logout' %}">Log out</a>)</small></p>
-            {% else %}
-              <a href="{% url 'auth_login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
-            {% endif %}
-            <h1><a href="{% url 'post_list' %}">Django Test Blog</a></h1>
+{% load static %}
+<html>
+    <head>
+        <title>Blog</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    </head>
+    <body>
+        <div class="page-header">
+            <h1><a href="/">Blog</a></h1>
         </div>
-    <div class="content">
-        <div class="row">
-            <div class="col-md-8">
-            {% block content %}
 
-            {% endblock %}
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+                </div>
             </div>
-        </div> 
-    </div>
-</body>
-    </html>
+        </div>
+    </body>
+</html>
