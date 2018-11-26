@@ -28,8 +28,10 @@ class Comment(models.Model):
     author = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
-    parent = models.ForeignKey('self', null=True, related_name='replies', on_delete=models.CASCADE)
-    
+    # parent_id = models.IntegerField(default=0)
+    # parent_comment = models.ForeignKey('self', related_name='replies', related_query_name='replies', blank=True, null=True, on_delete=models.CASCADE)
+    # children = models.IntegerField(default=0)
+
     class Meta:
         ordering = ['-created_date']
 

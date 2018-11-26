@@ -1,62 +1,84 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-	<div class="post">
-		{% if user.id == post.author_id %}
-			<a class="btn btn-default" href="{% url 'posts:post_edit' pk=post.pk %}">Edit post</a>
-			<a class="btn btn-default" href="{% url 'posts:post_remove' pk=post.pk %}">Delete post</a>
-		{% endif %}
-		<h1>{{ post.title }}</h1>
-		<div>
-		<span style="float:left; width: 80%">
-			<p>{{ post.text|linebreaksbr }}</p>
-		</span>
-	</div>
+<div class="post">
+    {% if user.id == post.author_id %}
+    <a class="btn btn-default" href="{% url 'posts:post_edit' pk=post.pk %}">Edit post</a>
+    <a class="btn btn-default" href="{% url 'posts:post_remove' pk=post.pk %}">Delete post</a>
+    {% endif %}
+    <h1>{{ post.title }}</h1>
+    <div>
+        <span style="float:left; width: 80%">
+            <p>{{ post.text|linebreaksbr }}</p>
+        </span>
+    </div>
+</div>
+<hr>
+
+{% if not user.is_authenticated %}
+<div>
+    <a href="{% url 'accounts:signup' %}">
+    Register to make comments :)
+    </a>
+    <hr>
+    <a href="{% url 'accounts:login' %}">
+    Or LogIn :)
+    </a>
+</div>
+{% endif %}
+
+<div class="btn-add-comment">
+    <a class="btn btn-default" href="{% url 'posts:add_comment_to_post' pk=post.pk %}">Add comment</a>
 </div>
 
-	<hr>
-	{% if not user.is_authenticated %}
-		<div>
-			<a href="{% url 'accounts:signup' %}">
-				Register to make comments :)
-			</a>
-			<hr>
-			<a href="{% url 'accounts:login' %}">
-				Or LogIn :)
-			</a>
-		</div>
-	{% endif %}
-		<div class="btn-add-comment">
-			<a class="btn btn-default" href="{% url 'posts:add_comment_to_post' pk=post.pk %}">Add comment</a>
-		</div>
-	{% for comment in post.list_comments %}
-			
-		<div class="comment">
-			<div class="date">
-				{{ comment.created_date }}
-		{% if user.is_authenticated and comment.author == user.username %}
-				<a class="btn btn-default" href="{% url 'posts:comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-		{% endif %}
-			</div>
-				<strong>{{ comment.author }}</strong>
-				<p>{{ comment.text|linebreaks }}</p>
-				
-		</div>
-		<!-- {% for reply in comment.replies.all %}
-			<li>
-					{{ reply.created_date }}
-					{% if user.is_authenticated and reply.author == user.username %}
-							<a class="btn btn-default" href="{% url 'posts:comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-					{% endif %}
-						</div>
-					<strong>{{ comment.author }}</strong>
-					<p>{{ comment.text|linebreaks }}</p>
-			</li>
-			{% endfor %} -->
+{% for comment in comments %}
+<div class="comment">
+    <div class="date">
+        {{ comment.created_date }}
+        {% if user.is_authenticated and comment.author == user.username %}
+        <a class="btn btn-default" href="{% url 'posts:comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+        {% endif %}
+    </div>
+    <strong>{{ comment.author }}</strong>
+    <p>{{ comment.text|linebreaks }}</p>
+    <a href=""></a>
+</div>
+<!-- {% for reply in comment.replies.all %}
+    <li>
+    		{{ reply.created_date }}
+    		{% if user.is_authenticated and reply.author == user.username %}
+    				<a class="btn btn-default" href="{% url 'posts:comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+    		{% endif %}
+    			</div>
+    		<strong>{{ comment.author }}</strong>
+    		<p>{{ comment.text|linebreaks }}</p>
+    </li>
+    {% endfor %} -->
+{% empty %}
+<p>No comments here yet :(</p>
+{% endfor %}
 
-		{% empty %}
-			<p>No comments here yet :(</p>
-	
-	{% endfor %}
+{% if comments.has_other_pages %}
+  <ul class="pagination">
+    {% if comments.has_previous %}
+      <li><a href="?page={{ comments.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in comments.paginator.page_range %}
+      {% if comments.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if comments.has_next %}
+      <li><a href="?page={{ comments.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
 
 {% endblock %}
+
