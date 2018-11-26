@@ -5,7 +5,7 @@
         <div class="post">
             <h1><a href="{% url 'posts:post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
             <div class="date">
-                {{ post.published_date }}
+                {{ post.created_date }}
             </div>
             {{ post.snippet }}
             <a href="{% url 'posts:post_detail' pk=post.pk %}" class="comment">Comments: {{ post.list_comments.count }}</a>
