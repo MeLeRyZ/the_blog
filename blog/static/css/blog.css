@@ -57,47 +57,10 @@
   }
   
   .comment {
-      margin: 20px 0px 20px 20px;
+      margin: 20px 20px 20px 20px;
   }
   
-  .button a, .registration a{
-    text-align: center;
-    line-height: 40px;
-    width: 40px;
-    height: 40px;
-    color: white;
-    background-color: red;
-    border-radius: 20px;
-    right: 30px;
-    bottom: 30px;
-    position: fixed;
-    font-size: 40;
-  }
-  .button:hover a, .registration:hover a{
-    box-shadow: 0 0 10px rgba(0,0,0,0.75);
-    text-shadow: 0 5px 5px rgba(0,0,0,0.5);
-    text-decoration: none;
-  }
   
   .date {
     font-style: italic;
-  }
-  
-  .vk_auth {
-    text-align: center;
-    line-height: 40px;
-    width: 40px;
-    height: 40px;
-    color: white;
-    background-color: blue;
-    border-radius: 20px;
-    right: 30px;
-    bottom: 30px;
-    position: fixed;
-    font-size: 40;
-  }
-  .vk_auth:hover {
-    box-shadow: 0 0 10px rgba(0,0,0,0.75);
-    text-shadow: 0 5px 5px rgba(0,0,0,0.5);
-    text-decoration: none;
   }
