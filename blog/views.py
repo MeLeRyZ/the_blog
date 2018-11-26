@@ -10,6 +10,17 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    user_name = request.user.username
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = user_name
+            comment.publish()
+            return redirect('posts:post_detail', pk=post.pk)
+    else:
+        form = CommentForm()
     return render(request, 'blog/post_detail.html', {'post': post})
 
 @login_required
