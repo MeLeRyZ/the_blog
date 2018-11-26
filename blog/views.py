@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 # from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+#from celery.decorators import task
+
 
 
 def post_list(request):
@@ -26,17 +28,17 @@ def post_detail(request, pk):
     except EmptyPage:
         comments = paginator.page(paginator.num_pages)
 
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = user_name
-            comment.publish()
-            return redirect('posts:post_detail', pk=post.pk)
-    else:
-        form = CommentForm()
-    context = { 'post': post, 'form': form, 'comments': comments}
+    # if request.method == "POST":
+    #     form = CommentForm(request.POST)
+    #     if form.is_valid():
+    #         comment = form.save(commit=False)
+    #         comment.post = post
+    #         comment.author = user_name
+    #         comment.publish()
+    #         return redirect('posts:post_detail', pk=post.pk)
+    # else:
+    #     form = CommentForm()
+    context = { 'post': post, 'comments': comments}
     return render(request, 'blog/post_detail.html', context)
 
 @login_required
@@ -90,7 +92,7 @@ def add_comment_to_post(request, pk):
             comment = form.save(commit=False)
             comment.post = post
             comment.author = user_name
-            comment.publish()
+            comment.publish(comment) # for async in DB
             return redirect('posts:post_detail', pk=post.pk)
     else:
         form = CommentForm()

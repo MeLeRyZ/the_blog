@@ -33,15 +33,18 @@
 
 {% for comment in comments %}
 <div class="comment">
-    <div class="date">
-        {{ comment.created_date }}
-        {% if user.is_authenticated and comment.author == user.username %}
-        <a class="btn btn-default" href="{% url 'posts:comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-        {% endif %}
-    </div>
-    <strong>{{ comment.author }}</strong>
-    <p>{{ comment.text|linebreaks }}</p>
-    <a href=""></a>
+	
+
+		<div class="date">
+			{{ comment.created_date }}
+			{% if user.is_authenticated and comment.author == user.username %}
+			<a class="btn btn-default" href="{% url 'posts:comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+			{% endif %}
+		</div>
+		<strong>{{ comment.author }}</strong>
+		<p>{{ comment.text|linebreaks }}</p>
+		<a href=""></a>
+	
 </div>
 <!-- {% for reply in comment.replies.all %}
     <li>
@@ -78,7 +81,9 @@
       <li class="disabled"><span>&raquo;</span></li>
     {% endif %}
   </ul>
-{% endif %}
+	{% endif %}
+
+<!-- for replies! -->
 
 {% endblock %}
 

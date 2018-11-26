@@ -2,6 +2,12 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import User
+import os
+from celery import Celery
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blog.settings')
+
+app = Celery('blog')
 # Create your models here.
 
 class Post(models.Model):
@@ -28,6 +34,10 @@ class Comment(models.Model):
     author = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
+    
+    # parent = models.ForeignKey('self',
+                                # on_delete=models.CASCADE,
+                                # related_name="children")
     # parent_id = models.IntegerField(default=0)
     # parent_comment = models.ForeignKey('self', related_name='replies', related_query_name='replies', blank=True, null=True, on_delete=models.CASCADE)
     # children = models.IntegerField(default=0)
@@ -35,8 +45,9 @@ class Comment(models.Model):
     class Meta:
         ordering = ['-created_date']
 
+    @app.task()
     def publish(self):
-        self.save()
+        return self.save()
 
     def __str__(self):
         return self.text

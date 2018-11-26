@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'blog',
     # registration
     'accounts',
+    # async
+    'celery',
 ]
 
 MIDDLEWARE = [
